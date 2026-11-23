@@ -1,0 +1,5 @@
+2026-11-03 14:00:01 | INFO  | PORT_1 | Link status UP on GigabitEthernet0/1
+2026-11-03 14:00:05 | WARN  | PORT_3 | Packet loss threshold exceeded: 6.5%
+2026-11-03 14:00:10 | INFO | PORT_2 | Interface down: physical link failure
+2026-11-03 14:00:15 | INFO  | PORT_4 | Interface speed negotiated at 1000Mbps
+2026-11-03 14:00:20 | WARN  | PORT_1 | High latency detected: 145ms
