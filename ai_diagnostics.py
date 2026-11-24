@@ -39,18 +39,20 @@ def fetch_flagged_logs():
 def generate_ai_remediation(log_entry):
     """Simulate AI Diagnostic Engine processing a contextualized error payload."""
     ts, port_id, severity, message, packet_loss = log_entry
+    loss = packet_loss if packet_loss is not None else 0.0
+    loss_txt = f"{packet_loss}%" if packet_loss is not None else "n/a"
 
-    print("\n" + "="*70)
-    print(f"[ALERT DETECTED] [{ts}] Device: {port_id} | Sev: {severity}")
-    print(f"Message: {message} | Packet Loss: {packet_loss}%")
+    print("\n" + "=" * 70)
+    print(f"[ALERT DETECTED] [{ts}] Port: {port_id} | Sev: {severity}")
+    print(f"Message: {message} | Packet Loss: {loss_txt}")
     print("-" * 70)
     print("[AI DIAGNOSTIC WORKFLOW EXECUTING...]")
 
     # Pattern match error key
-    matched_rule = None
-    if "PORT_2" in message or "DOWN" in message:
+    msg = message.lower()
+    if "link failure" in msg or "down" in msg:
         matched_rule = TROUBLESHOOTING_RULES["PORT_2_DOWN"]
-    elif packet_loss > 5.0:
+    elif loss > 5.0:
         matched_rule = TROUBLESHOOTING_RULES["HIGH_PACKET_LOSS"]
     else:
         matched_rule = None
@@ -64,10 +66,10 @@ def generate_ai_remediation(log_entry):
         print("Root Cause Hypothesis : Uncategorized telemetry anomaly.")
         print("Actionable Remediation Steps:")
         print("  1. Collect detailed system debug logs.")
-        print("  2. Escalated to Tier 2 Network Engineering team.")
-        
-    print("="*70)
+        print("  2. Escalate to Tier 2 Network Engineering team.")
 
+    print("=" * 70)
+    
 def main():
     flagged_events = fetch_flagged_logs()
     if not flagged_events:
